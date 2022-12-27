@@ -3,7 +3,7 @@ import { Box } from '@mui/system'
 import Button from '@mui/material/Button';
 import React, { useContext } from 'react';
 import axios from 'axios';
-import {baseUrl} from '../../../../url'
+import { baseUrl } from '../../../../url'
 import { UserContext } from '../../../../Context/Context';
 
 function Delivery({ item }) {
@@ -11,11 +11,11 @@ function Delivery({ item }) {
     const { setCartitems } = useContext(UserContext)
 
     const handleRemove = () => {
-        let user = localStorage.getItem("user")
-        user = JSON.parse(user)
+        let token = localStorage.getItem("token")
+        token = JSON.parse(token)
         const customConfig = {
             headers: {
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${token}`
             }
         }
 
@@ -26,10 +26,9 @@ function Delivery({ item }) {
 
     }
     return (
-        <Box>
+        <Box sx={{ mr: '2rem' }}>
             <Box sx={{
-                display: 'flex',
-                right: '1rem',
+                display: 'flex'
             }}>
                 <Typography>Delivery by Mon Dec 5 |</Typography>
                 <Typography sx={{ color: 'green' }}>Free</Typography>
@@ -38,7 +37,7 @@ function Delivery({ item }) {
                 display: 'flex',
                 mt: '3rem',
             }}>
-                <Button variant="text">Add to wishlist</Button>
+                {/* <Button variant="text">Add to wishlist</Button> */}
                 <Button variant="text" onClick={handleRemove}>REMOVE</Button>
             </Box>
         </Box>

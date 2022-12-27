@@ -5,18 +5,19 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { UserContext } from '../../../../Context/Context';
 import axios from 'axios';
-import {baseUrl} from '../../../../url'
+import { baseUrl } from '../../../../url'
 
 function Quantity({ item }) {
-    const [numb, setNumb] = useState(item.quantity)
+    const [numb, setNumb] = useState('')
+    const [count, setCount] = useState(0)
     const { setCartitems } = useContext(UserContext)
 
     useEffect(() => {
-        let user = localStorage.getItem("user")
-        user = JSON.parse(user)
+        let token = localStorage.getItem("token")
+        token = JSON.parse(token)
         const customConfig = {
             headers: {
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${token}`
             }
         }
         const data = {
@@ -27,19 +28,22 @@ function Quantity({ item }) {
             .then((res) => {
                 setCartitems(res.data)
             })
-    }, [numb])
+    }, [count])
     return (
         <Box sx={{
             display: 'flex',
             gap: 1,
             justifyContent: 'center',
             mt: '1rem'
-        }}>
+        }} key={item.name}>
             <Box sx={{
                 border: 1,
                 borderRadius: '50%'
             }}>
-                <AddIcon onClick={() => setNumb(numb => numb + 1)} />
+                <AddIcon onClick={() => {
+                    setNumb("+")
+                    setCount(prev => prev + 1)
+                }} />
             </Box>
             <Box sx={{
                 border: 1,
@@ -52,7 +56,10 @@ function Quantity({ item }) {
                 border: 1,
                 borderRadius: '50%'
             }}>
-                {numb === 1 ? (<RemoveIcon />) : (<RemoveIcon onClick={() => setNumb(numb => numb - 1)} />)}
+                {numb === 1 ? (<RemoveIcon />) : (<RemoveIcon onClick={() => {
+                    setNumb("-")
+                    setCount(prev => prev - 1)
+                }} />)}
             </Box>
         </Box>
     )

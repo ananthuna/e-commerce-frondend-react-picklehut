@@ -16,6 +16,7 @@ import axios from '../axios'
 import { baseUrl } from '../url';
 import { useNavigate } from 'react-router-dom'
 import { Backdrop, CircularProgress } from '@mui/material';
+import { UserContext } from '../Context/Context';
 
 function Copyright(props) {
 
@@ -41,6 +42,7 @@ export default function SignIn({ socket }) {
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const [open, setOpen] = useState(false)
+  const { setUser } = React.useContext(UserContext)
 
   const handleClose = () => {
     setOpen(false);
@@ -51,13 +53,12 @@ export default function SignIn({ socket }) {
     event.preventDefault()
     setOpen(!open)
     const data = new FormData(event.currentTarget)
-    token = localStorage.getItem("user.token")
-    const loginData = {
+    token = localStorage.getItem("token")
+    const Data = {
       email: data.get('email'),
       password: data.get('password'),
       token: JSON.parse(token)
     }
-    const Data = JSON.stringify(loginData);
     const customConfig = {
       headers: {
         'Content-Type': 'application/json'
@@ -79,7 +80,10 @@ export default function SignIn({ socket }) {
             break;
         }
       } else {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("token", JSON.stringify(response.data.token))
+        const { token, ...user } = response.data
+        setUser({ ...user })
+        sessionStorage.setItem('user', JSON.stringify({ ...user }))
         navigate('/')
       }
     })

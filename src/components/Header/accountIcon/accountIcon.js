@@ -59,7 +59,8 @@ function accountIcon() {
     const navigate = useNavigate()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    const {user} =React.useContext(UserContext)
+    const {user}=React.useContext(UserContext)
+    
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -104,7 +105,7 @@ function accountIcon() {
                     handleClose()
                 }} disableRipple>
                     <PersonIcon />
-                    {user? user.firstName : 'My account'}
+                    {user ? user.firstName : 'account'}
                 </MenuItem>
                 <MenuItem onClick={() => {
                     navigate('/account')

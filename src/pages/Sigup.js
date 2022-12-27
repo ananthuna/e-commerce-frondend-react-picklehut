@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { baseUrl } from '../url'
 import { useNavigate } from 'react-router-dom'
 import { Backdrop, CircularProgress } from '@mui/material';
+import { UserContext } from '../Context/Context';
 
 function Copyright(props) {
   return (
@@ -39,6 +40,7 @@ const theme = createTheme();
 export default function SignUp() {
 
   const [email, setEmail] = useState()
+  const { setUser } = React.useContext(UserContext)
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [open, setOpen] = useState(false)
   const toggle = () => setTooltipOpen(!tooltipOpen);
@@ -62,7 +64,10 @@ export default function SignUp() {
 
         console.log(response.data);
         if (response.data) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("token", JSON.stringify(response.data.token))
+          const { token, ...user } = response.data
+          setUser({ ...user })
+          sessionStorage.setItem('user', JSON.stringify({ ...user }))
           navigate('/')
         }
         if (response.data === "already used email") {

@@ -9,23 +9,25 @@ import { baseUrl } from '../../url'
 import { UserContext } from '../../Context/Context'
 
 function CartItems() {
-    const [cart, setCart] = React.useState(false)
+    const [cart, setCart] = React.useState({})
     const { cartitems, setCartitems } = useContext(UserContext)
+    const [items, setItems] = React.useState([])
     useEffect(() => {
-        let user = localStorage.getItem("user")
-        user = JSON.parse(user)
+        let token = localStorage.getItem("token")
+        token = JSON.parse(token)
         const customConfig = {
             headers: {
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${token}`
             }
         }
 
         axios.get(`${baseUrl}/api/cart/cartitems`, customConfig)
             .then((res) => {
-                setCart(true)
+                setCart(res.data)
                 setCartitems(res.data)
+                setItems(res.data.items)
             })
-    }, [])
+    }, [cartitems])
 
 
     return (
@@ -39,14 +41,14 @@ function CartItems() {
             }}>
                 <Address />
 
-                {cart && <List items={cartitems.items} />}
+                {cart && <List items={items} />}
 
                 <PlaceOrder />
             </Box>
             <Box sx={{
                 width: '40%'
             }}>
-                {cart && <TotalPrice bill={cartitems.bill} />}
+                {cart && <TotalPrice cart={cart} items={items} />}
             </Box>
         </Box>
     )

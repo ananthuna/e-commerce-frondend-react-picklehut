@@ -13,13 +13,14 @@ import { UserContext } from '../../Context/Context';
 
 
 export default function PrimarySearchAppBar() {
-    const {user,setUser} =React.useContext(UserContext)
+    const { user, setUser } = React.useContext(UserContext)
     const navigate = useNavigate()
     React.useEffect(() => {
-        let User = localStorage.getItem("user");
+        let User = sessionStorage.getItem('user')
         setUser(JSON.parse(User))
-        console.log(JSON.parse(User));
     }, [])
+
+
 
 
 

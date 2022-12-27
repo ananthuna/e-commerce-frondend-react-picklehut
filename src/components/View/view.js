@@ -25,12 +25,12 @@ function view() {
     }, [])
 
 
-    let user = localStorage.getItem("user")
-    user = JSON.parse(user)
-    const customConfig = {
+    let token = localStorage.getItem("token")
+    token = JSON.parse(token)
+    const customConfig = {  
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
+            'Authorization': `Bearer ${token}`
         }
     }
     let data = {
